@@ -40,7 +40,7 @@ class _VendorBottlesState extends State<VendorBottles> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Form Example'),
+        title: Text('Add a bottle'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
