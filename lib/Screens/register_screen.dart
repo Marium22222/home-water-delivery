@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:custom_searchable_dropdown/custom_searchable_dropdown.dart';
-import 'package:home_water_delivery_management_system/Screens/vendor_screens/vendor_dashboard.dart';
+
+import 'package:home_water_delivery_management_system/models/roles_model.dart';
 import 'package:home_water_delivery_management_system/network_utils/api.dart';
+import 'package:home_water_delivery_management_system/services/roles_service.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:home_water_delivery_management_system/Screens/login_screen.dart';
@@ -11,11 +13,23 @@ import 'package:home_water_delivery_management_system/Screens/login_screen.dart'
 import '../classes/countries.dart';
 
 class Register extends StatefulWidget {
+  const Register({super.key});
+
   @override
   _RegisterState createState() => _RegisterState();
 }
 
 class _RegisterState extends State<Register> {
+  RolesService RoleSer1 = RolesService();
+  List<Roles> rolesList = [];
+
+  //model of role and service of role above
+  String dropdownValue = ''; // Default value
+  // Map<String, String> dropdownItems = {
+  //   'vendor': '1',
+  //   'user': '2',
+  //   'vendor_employee': '3',
+  // };
   String? selectedCountryCode;
   String? selectedCountryDialCode;
   String? selectedCountryEmoji;
@@ -31,7 +45,8 @@ class _RegisterState extends State<Register> {
       selectedCountryLabel = 'Pakistan';
     }
   }
-  bool isAuth=false;
+
+  bool isAuth = false;
   void _logout() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     localStorage.remove('token');
@@ -39,32 +54,36 @@ class _RegisterState extends State<Register> {
       isAuth = false;
     });
   }
+
   bool _isLoading = false;
   final _formKey = GlobalKey<FormState>();
-   var country_id;
+  var country_id;
   var password;
   var name;
   var role;
   var phone;
+  var roleid;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
-    // TODO: implement initState
+
     setCountry();
+    getData();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.teal,
       key: _scaffoldKey,
       body: Container(
-        // decoration: BoxDecoration(
-        //   image: DecorationImage(
-        //     image: NetworkImage('https://media.istockphoto.com/id/1162278607/vector/save-water.jpg?s=612x612&w=0&k=20&c=8CYBJJlt3fq8ovQWj82wifATzCq8eKf6_ch89aVtmrg='),
-        //     fit: BoxFit.cover,
-        //   ),
-        // ),
-        // color: Colors.teal,
+
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: NetworkImage(
+                  "https://images.prismic.io/swim-guide/d393facd-05c8-4625-a1dc-c441054ba65f_waves.png?auto=compress,format"),
+              fit: BoxFit.cover),
+        ),
         child: Stack(
           children: <Widget>[
             Positioned(
@@ -73,6 +92,15 @@ class _RegisterState extends State<Register> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+                    Text("KHI WATER",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30,
+                            color: Colors.blueGrey,
+                            fontFamily: "Times New Roman")),
+                    SizedBox(
+                      height: 40,
+                    ),
                     Card(
                       elevation: 4.0,
                       color: Colors.white,
@@ -91,12 +119,12 @@ class _RegisterState extends State<Register> {
                                     fontWeight: FontWeight.w400,
                                     color: Colors.grey.shade600),
                                 items: Countries.countries,
-                                suffixIcon:
-                                const Icon(Icons.keyboard_arrow_down_rounded),
+                                suffixIcon: const Icon(
+                                    Icons.keyboard_arrow_down_rounded),
                                 primaryColor: Colors.grey.shade700,
-                                label:selectedCountryLabel,
-
-                                dropDownMenuItems: Countries.countries.map((item) {
+                                label: selectedCountryLabel,
+                                dropDownMenuItems:
+                                    Countries.countries.map((item) {
                                   return item['name'];
                                 }).toList(),
                                 prefixIcon: Padding(
@@ -110,11 +138,12 @@ class _RegisterState extends State<Register> {
                                 ),
                                 onChanged: (value) {
                                   setState(() {
-                                    selectedCountryCode = value['code'].toString();
+                                    selectedCountryCode =
+                                        value['code'].toString();
                                     selectedCountryDialCode =
                                         value['dial_code'].toString();
-                                    selectedCountryEmoji = value['emoji'].toString();
-
+                                    selectedCountryEmoji =
+                                        value['emoji'].toString();
                                   });
                                 },
                               ),
@@ -128,19 +157,21 @@ class _RegisterState extends State<Register> {
                                     padding: const EdgeInsets.only(left: 20),
                                     child: Text(
                                       selectedCountryDialCode ?? '+',
-
                                     ),
                                   ),
-                                  SizedBox(width: 20,),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
                                   Expanded(
                                     child: Container(
                                       height: 55,
                                       constraints:
-                                      const BoxConstraints(maxWidth: 280),
-                                      margin:
-                                      const EdgeInsets.symmetric(horizontal: 1),
-                                      child:  TextFormField(
-                                        style: TextStyle(color: Color(0xFF000000)),
+                                          const BoxConstraints(maxWidth: 280),
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 1),
+                                      child: TextFormField(
+                                        style:
+                                            TextStyle(color: Color(0xFF000000)),
                                         cursorColor: Color(0xFF9b9b9b),
                                         keyboardType: TextInputType.text,
                                         decoration: InputDecoration(
@@ -158,7 +189,8 @@ class _RegisterState extends State<Register> {
                                           if (phonenumber!.isEmpty) {
                                             return 'Please enter phone number';
                                           }
-                                          phone = selectedCountryDialCode! + phonenumber;
+                                          phone = selectedCountryDialCode! +
+                                              phonenumber;
                                           return null;
                                         },
                                       ),
@@ -166,65 +198,61 @@ class _RegisterState extends State<Register> {
                                   ),
                                 ],
                               ),
-                              // TextFormField(
-                              //   style: TextStyle(color: Color(0xFF000000)),
-                              //   cursorColor: Color(0xFF9b9b9b),
-                              //   keyboardType: TextInputType.text,
-                              //   decoration: InputDecoration(
-                              //     prefixIcon: Icon(
-                              //       Icons.email,
-                              //       color: Colors.grey,
-                              //     ),
-                              //     hintText: "role",
-                              //     hintStyle: TextStyle(
-                              //         color: Color(0xFF9b9b9b),
-                              //         fontSize: 15,
-                              //         fontWeight: FontWeight.normal),
-                              //   ),
-                              //   validator: (roleValue) {
-                              //     if (roleValue!.isEmpty) {
-                              //       return 'Please enter role';
-                              //     }
-                              //     role = roleValue;
-                              //     return null;
-                              //   },
-                              // ),
 
 
-                        DropdownButtonFormField<String>(
-                        value: role,
-                        onChanged: (newValue) {
-                          setState(() {
-                            role = newValue;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(
-                            Icons.email,
-                            color: Colors.grey,
-                          ),
-                          hintText: "Select Role",
-                          hintStyle: TextStyle(
-                            color: Color(0xFF9b9b9b),
-                            fontSize: 15,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please select a role';
-                          }
-                          return null;
-                        },
-                        items: ['vendor', 'user'].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
+//for roles
+                              DropdownButtonFormField<String>(
+                                value: role,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    role = newValue;
+                                    //roleid = to pass when a role is selected from dropdown
+                                    roleid =rolesList.firstWhere((element) => element.name == newValue).id;
+                                    //not correct format
 
-                    TextFormField(
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.email,
+                                    color: Colors.grey,
+                                  ),
+                                  hintText: "Select Role",
+                                  hintStyle: TextStyle(
+                                    color: Color(0xFF9b9b9b),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please select a role';
+                                  }
+                                  return null;
+                                },
+                                // items: [
+                                //   'vendor',
+                                //   'user',
+                                //   'vendor_employee'
+                                // ].map<DropdownMenuItem<String>>((String value) {
+                                //   return DropdownMenuItem<String>(
+                                //     value: value,
+                                //     child: Text(value),
+                                //   );
+                                // }).toList(),
+
+                                //dropdown role names
+                                items: rolesList != null
+                                    ? rolesList.map((role) {
+                                  return DropdownMenuItem<String>(
+                                    value: role.name,
+                                    child: Text(role.name),
+                                  );
+                                }).toList():[],
+                              ),
+                              //end
+
+                              TextFormField(
                                 style: TextStyle(color: Color(0xFF000000)),
                                 cursorColor: Color(0xFF9b9b9b),
                                 keyboardType: TextInputType.text,
@@ -247,52 +275,30 @@ class _RegisterState extends State<Register> {
                                   return null;
                                 },
                               ),
-                              TextFormField(
-                                style: TextStyle(color: Color(0xFF000000)),
-                                cursorColor: Color(0xFF9b9b9b),
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.insert_emoticon,
-                                    color: Colors.grey,
-                                  ),
-                                  hintText: "country id",
-                                  hintStyle: TextStyle(
-                                      color: Color(0xFF9b9b9b),
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                                validator: (countryId) {
-                                  if (countryId == null || countryId.isEmpty) {
-                                    return 'Please enter your country ID';
-                                  }
-                                  country_id = countryId;
-                                  return null;
-                                },
-                              ),
                               // TextFormField(
                               //   style: TextStyle(color: Color(0xFF000000)),
                               //   cursorColor: Color(0xFF9b9b9b),
-                              //   keyboardType: TextInputType.text,
+                              //   keyboardType: TextInputType.number,
                               //   decoration: InputDecoration(
                               //     prefixIcon: Icon(
-                              //       Icons.phone,
+                              //       Icons.insert_emoticon,
                               //       color: Colors.grey,
                               //     ),
-                              //     hintText: "Phone",
+                              //     hintText: "country id",
                               //     hintStyle: TextStyle(
                               //         color: Color(0xFF9b9b9b),
                               //         fontSize: 15,
                               //         fontWeight: FontWeight.normal),
                               //   ),
-                              //   validator: (phonenumber) {
-                              //     if (phonenumber!.isEmpty) {
-                              //       return 'Please enter phone number';
+                              //   validator: (countryId) {
+                              //     if (countryId == null || countryId.isEmpty) {
+                              //       return 'Please enter your country ID';
                               //     }
-                              //     phone = selectedCountryDialCode! + phonenumber;
+                              //     country_id = countryId;
                               //     return null;
                               //   },
                               // ),
+
                               TextFormField(
                                 style: TextStyle(color: Color(0xFF000000)),
                                 cursorColor: Color(0xFF9b9b9b),
@@ -324,7 +330,9 @@ class _RegisterState extends State<Register> {
                                     padding: EdgeInsets.only(
                                         top: 8, bottom: 8, left: 10, right: 10),
                                     child: Text(
-                                      _isLoading? 'Proccessing...' : 'Register',
+                                      _isLoading
+                                          ? 'Proccessing...'
+                                          : 'Register',
                                       textDirection: TextDirection.ltr,
                                       style: TextStyle(
                                         color: Colors.white,
@@ -334,11 +342,7 @@ class _RegisterState extends State<Register> {
                                       ),
                                     ),
                                   ),
-                                  // color: Colors.teal,
-                                  // disabledColor: Colors.grey,
-                                  // shape: new RoundedRectangleBorder(
-                                  //     borderRadius:
-                                  //     new BorderRadius.circular(20.0)),
+
                                   onPressed: () {
                                     if (_formKey.currentState!.validate()) {
                                       _register();
@@ -351,7 +355,6 @@ class _RegisterState extends State<Register> {
                         ),
                       ),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.only(top: 20),
                       child: InkWell(
@@ -381,34 +384,40 @@ class _RegisterState extends State<Register> {
       ),
     );
   }
-  void _register()async{
+
+  void _register() async {
     setState(() {
       _isLoading = true;
     });
     var data = {
       'name': name,
-      'country_id' : country_id,
+      'country_id': selectedCountryDialCode,
       'phone': phone,
       'password': password,
-      'role': role
+      //passing the role id.
+      'role_id': roleid
     };
-print(data);
+    print(data);
     var res = await Network().authData(data, 'auth/register');
     var body = json.decode(res.body);
     print("This is body");
     print(body);
     // if(body['success'] != null && body['success']){
-    if(body['user'] != null){
+    if (body['user'] != null) {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.setString('token', json.encode(body['token']));
       localStorage.setString('user', json.encode(body['user']));
       print("I am here");
-   Get.to( Login());
-
+      Get.to(Login());
     }
 
     setState(() {
       _isLoading = false;
     });
+  }
+
+  void getData() async {
+    rolesList = await RoleSer1.getRoles();
+    setState(() {});
   }
 }

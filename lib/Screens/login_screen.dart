@@ -69,9 +69,16 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
     return Scaffold(
+      // appBar: AppBar(title:Text("KHI WATER",style: TextStyle(color: Colors.blueGrey),),
+      // backgroundColor: Colors.white,
+      //
+      // centerTitle: true,),
       key: _scaffoldKey,
       body: Container(
-        color: Colors.teal,
+        // color: Colors.teal,
+        decoration: BoxDecoration(
+          image: DecorationImage(image:NetworkImage("https://images.prismic.io/swim-guide/d393facd-05c8-4625-a1dc-c441054ba65f_waves.png?auto=compress,format"),fit: BoxFit.cover),
+        ),
         child: Stack(
           children: <Widget>[
             Positioned(
@@ -80,6 +87,13 @@ class _LoginState extends State<Login> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+                    Text("KHI WATER",
+                    style: TextStyle(fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                    color: Colors.blueGrey,
+                    fontFamily: "Times New Roman")),
+
+                    SizedBox(height: 40,),
                     Card(
                       elevation: 4.0,
                       color: Colors.white,
@@ -180,29 +194,29 @@ class _LoginState extends State<Login> {
                                   ),
                                 ],
                               ),
-                              TextFormField(
-                                style: TextStyle(color: Color(0xFF000000)),
-                                cursorColor: Color(0xFF9b9b9b),
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.countertops_rounded,
-                                    color: Colors.grey,
-                                  ),
-                                  hintText: "country id",
-                                  hintStyle: TextStyle(
-                                      color: Color(0xFF9b9b9b),
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                                validator: (countryValue) {
-                                  if (countryValue!.isEmpty) {
-                                    return 'Please enter country id';
-                                  }
-                                 country_id =countryValue;
-                                  return null;
-                                },
-                              ),
+                              // TextFormField(
+                              //   style: TextStyle(color: Color(0xFF000000)),
+                              //   cursorColor: Color(0xFF9b9b9b),
+                              //   keyboardType: TextInputType.number,
+                              //   decoration: InputDecoration(
+                              //     prefixIcon: Icon(
+                              //       Icons.countertops_rounded,
+                              //       color: Colors.grey,
+                              //     ),
+                              //     hintText: "country id",
+                              //     hintStyle: TextStyle(
+                              //         color: Color(0xFF9b9b9b),
+                              //         fontSize: 15,
+                              //         fontWeight: FontWeight.normal),
+                              //   ),
+                              //   validator: (countryValue) {
+                              //     if (countryValue!.isEmpty) {
+                              //       return 'Please enter country id';
+                              //     }
+                              //    country_id =countryValue;
+                              //     return null;
+                              //   },
+                              // ),
                               // TextFormField(
                               //   style: TextStyle(color: Color(0xFF000000)),
                               //   cursorColor: Color(0xFF9b9b9b),
@@ -318,7 +332,7 @@ class _LoginState extends State<Login> {
       _isLoading = true;
     });
     var data = {
-      'country_id' : country_id,
+      // 'country_id' : selectedCountryDialCode,
       'phone' : phone,
       'password' : password
     };

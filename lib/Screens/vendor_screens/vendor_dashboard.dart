@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:home_water_delivery_management_system/Screens/login_screen.dart';
+import 'package:home_water_delivery_management_system/Screens/vendor_screens/vendor_bottles.dart';
 import 'package:home_water_delivery_management_system/Screens/vendor_screens/vendor_existing_bottles.dart';
 import 'package:home_water_delivery_management_system/Screens/vendor_screens/vendor_orders_screen.dart';
 import 'package:home_water_delivery_management_system/Screens/vendor_screens/vendor_progress_screen.dart';
-import 'package:home_water_delivery_management_system/Screens/vendor_screens/vendor_water_bottles.dart';
+import 'package:home_water_delivery_management_system/Screens/vendor_screens/vendor_product.dart';
 
 class VendorDashboard extends StatefulWidget {
   final Function logoutCallback;
@@ -50,7 +51,17 @@ class _VendorDashboardState extends State<VendorDashboard> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onTap: () {
-                    Get.to(VendorBottles());
+                    Get.to(VendorBottle());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.water_drop, color: Colors.white),
+                  title: Text(
+                    'New Product Details',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onTap: () {
+                    Get.to(VendorProduct());
                   },
                 ),
                 ListTile(
