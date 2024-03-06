@@ -1,45 +1,35 @@
-// To parse this JSON data, do
-//
-//     final bottles = bottlesFromJson(jsonString);
+
 
 import 'dart:convert';
 
-Bottles bottlesFromJson(String str) => Bottles.fromJson(json.decode(str));
+List<Bottles> bottlesFromJson(String str) => List<Bottles>.from(json.decode(str).map((x) => Bottles.fromJson(x)));
 
-String bottlesToJson(Bottles data) => json.encode(data.toJson());
+String BottlesToJson(List<Bottles> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Bottles {
-  List<Datum> data;
+  int bottle_id;
+   String size;
+  String name;
+
 
   Bottles({
-    required this.data,
+      required this.bottle_id,
+     required this.size,
+    required this.name,
+
   });
 
   factory Bottles.fromJson(Map<String, dynamic> json) => Bottles(
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
-  };
-}
-
-class Datum {
-  String name;
-  String size;
-
-  Datum({
-    required this.name,
-    required this.size,
-  });
-
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+    bottle_id: json["bottle_id"],
+     size: json["size"],
     name: json["name"],
-    size: json["size"],
+
   );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
+    "bottle_id":bottle_id,
     "size": size,
+    "name": name,
+
   };
 }

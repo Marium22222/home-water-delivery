@@ -4,18 +4,30 @@ import 'package:image_picker/image_picker.dart';
 import 'package:home_water_delivery_management_system/services/bottle_service.dart';
 
 
-class VendorBottle extends StatefulWidget {
+class VendorBottleUpdate extends StatefulWidget {
+  final int id;
+ final String size;
+  final String name;
+  const VendorBottleUpdate({super.key,required this.id,required this.size, required this.name,});
+
   @override
-  _VendorBottleState createState() => _VendorBottleState();
+  @override
+  _VendorBottleUpdateState createState() => _VendorBottleUpdateState();
 }
 
-class _VendorBottleState extends State<VendorBottle> {
-  TextEditingController sizeController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
+class _VendorBottleUpdateState extends State<VendorBottleUpdate> {
+  late TextEditingController sizeController ;
+  late TextEditingController nameController ;
   // String dropdownValue = '1.5L Water Bottle';
   // // Default value
   // String dropdownValue1 = '1.5L ';
+@override
+  void initState() {
+   sizeController=TextEditingController(text:widget.size);
+      nameController=TextEditingController(text:widget.name);
 
+    
+  }
 
 
 
@@ -23,7 +35,7 @@ class _VendorBottleState extends State<VendorBottle> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add your bottle'),
+        title: Text('Update your bottle'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -33,19 +45,25 @@ class _VendorBottleState extends State<VendorBottle> {
 
             TextFormField(
               controller: nameController,
+             
               decoration: InputDecoration(labelText: 'Name'),
 
             ),
             TextFormField(
               controller: sizeController,
+             
               decoration: InputDecoration(labelText: 'Size'),
 
             ),
             ElevatedButton(
               onPressed: (){
-                BottlesService().sendBottles(sizeController.text,nameController.text);
+                BottlesService().updateBottle(widget.id,sizeController.text,nameController.text);
+                // print(${widget.id}+$widget.name+widget.size);
+                print(widget.id);
+                   print(widget.name);
+                      print(widget.size);
               },
-              child: Text('Insert'),
+              child: Text('Update'),
             ),
            
 

@@ -1,6 +1,4 @@
-// To parse this JSON data, do
-//
-//     final roles = rolesFromJson(jsonString);
+
 
 import 'dart:convert';
 
