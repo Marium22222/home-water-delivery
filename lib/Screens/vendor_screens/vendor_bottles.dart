@@ -17,8 +17,6 @@ class _VendorBottleState extends State<VendorBottle> {
   // String dropdownValue1 = '1.5L ';
 
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

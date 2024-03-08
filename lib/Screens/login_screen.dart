@@ -114,7 +114,7 @@ class _LoginState extends State<Login> {
                                 items: Countries.countries,
                                 suffixIcon:
                                 const Icon(Icons.keyboard_arrow_down_rounded),
-                                primaryColor: Colors.grey.shade700,
+                                // primaryColor: Colors.grey.shade700,
                                 label: selectedCountryLabel,
                                 // labelStyle: GoogleFonts.raleway(
                                 //     fontWeight: FontWeight.w500,

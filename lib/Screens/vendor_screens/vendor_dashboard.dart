@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:home_water_delivery_management_system/Screens/login_screen.dart';
 import 'package:home_water_delivery_management_system/Screens/vendor_screens/vendor_bottles.dart';
 import 'package:home_water_delivery_management_system/Screens/vendor_screens/vendor_existing_bottles.dart';
+import 'package:home_water_delivery_management_system/Screens/vendor_screens/vendor_existing_products.dart';
 import 'package:home_water_delivery_management_system/Screens/vendor_screens/vendor_orders_screen.dart';
 import 'package:home_water_delivery_management_system/Screens/vendor_screens/vendor_progress_screen.dart';
 import 'package:home_water_delivery_management_system/Screens/vendor_screens/vendor_product.dart';
@@ -72,6 +73,16 @@ class _VendorDashboardState extends State<VendorDashboard> {
                   ),
                   onTap: () {
                     Get.to(VendorExistingDetails());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.water_drop, color: Colors.white),
+                  title: Text(
+                    'Existing product details',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onTap: () {
+                    Get.to(VendorExistingProduct());
                   },
                 ),
                 ListTile(

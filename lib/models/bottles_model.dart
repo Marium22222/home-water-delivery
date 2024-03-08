@@ -8,7 +8,7 @@ String BottlesToJson(List<Bottles> data) => json.encode(List<dynamic>.from(data.
 
 class Bottles {
   int bottle_id;
-   String size;
+  String size;
   String name;
 
 

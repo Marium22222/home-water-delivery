@@ -2,55 +2,55 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:home_water_delivery_management_system/Screens/vendor_screens/vendor_exist_dialogue.dart';
 import 'package:home_water_delivery_management_system/services/bottle_service.dart';
+import 'package:home_water_delivery_management_system/services/product_service.dart';
 
 import '../../models/bottles_model.dart';
+import '../../models/product_model.dart';
 
 
-class VendorExistingDetails extends StatefulWidget {
-  const VendorExistingDetails({super.key});
+class VendorExistingProduct extends StatefulWidget {
+  const VendorExistingProduct({super.key});
 
   @override
-  State<VendorExistingDetails> createState() => _VendorExistingDetailsState();
+  State<VendorExistingProduct> createState() => _VendorExistingProductState();
 }
 
-class _VendorExistingDetailsState extends State<VendorExistingDetails> {
+class _VendorExistingProductState extends State<VendorExistingProduct> {
   @override
   void initState() {
 
 
     getData();
   }
+//to be modified
+  ProductService prodSer1 = ProductService();
+  List<Product> ProductList = [];
 
-  BottlesService botSer1 = BottlesService();
-  List<Bottles> bottleList = [];
-  final List<String> items = [
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Existing bottle details"),
+        title: Text("Existing product details"),
       ),
       body:ListView.builder(
-        itemCount: bottleList.length,
+        //to be modified
+        itemCount: ProductList.length,
         itemBuilder: (BuildContext context, int index) {
-          Bottles bottles = bottleList[index];
+          Product products = ProductList[index];
+
           return InkWell(
             onTap:(){
-               showDialog(context: context,
-               builder: (context)=>VendorExistingDialogue(id:bottles.bottle_id,size:bottles.size,name:bottles.name));
-          
-          },
+              // showDialog(context: context,
+              //     builder: (context)=>
+                      // VendorExistingDialogue
+                      //   (id:bottles.bottle_id,size:bottles.size,name:bottles.name));
+
+            },
             child: ListTile(
               leading: SizedBox(
                 width: 50,
-                  height: 50,
-                  child: Image.network("https://static6.depositphotos.com/1063437/556/i/450/depositphotos_5569996-stock-photo-polycarbonate-plastic-bottle-of-mineral.jpg"),),
+                height: 50,
+                child: Image.network("https://static6.depositphotos.com/1063437/556/i/450/depositphotos_5569996-stock-photo-polycarbonate-plastic-bottle-of-mineral.jpg"),),
               title: Container(
                 decoration: BoxDecoration(
                   color: Colors.white, // Background color
@@ -66,8 +66,10 @@ class _VendorExistingDetailsState extends State<VendorExistingDetails> {
                 ),
                 child: Column(
                   children: [
-                    Text(bottles.name),
-                    Text(bottles.size),
+                    Text(products.name),
+                    Text(products.description),
+                    Text("Price"),
+                    Text("description")
                     // Text("Blu Water"),
                     // Text("500 first advance")
 
@@ -84,8 +86,9 @@ class _VendorExistingDetailsState extends State<VendorExistingDetails> {
 
     );
   }
+  //to be modified
   void getData() async {
-    bottleList = await botSer1.getBottles();
+    ProductList = await prodSer1.getProducts();
     setState(() {});
   }
 }
