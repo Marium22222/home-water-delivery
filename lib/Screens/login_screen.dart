@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:custom_searchable_dropdown/custom_searchable_dropdown.dart';
 import 'package:home_water_delivery_management_system/Screens/vendor_screens/vendor_dashboard.dart';
 import 'package:home_water_delivery_management_system/network_utils/api.dart';
 
@@ -9,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:home_water_delivery_management_system/Screens/register_screen.dart';
 
 import '../classes/countries.dart';
+import '../classes/custom_searchable_dropdown.dart';
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();

@@ -21,7 +21,7 @@ class Bottles {
 
   factory Bottles.fromJson(Map<String, dynamic> json) => Bottles(
     bottle_id: json["bottle_id"],
-     size: json["size"],
+    size: json["size"],
     name: json["name"],
 
   );
