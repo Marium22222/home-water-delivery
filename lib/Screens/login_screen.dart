@@ -346,6 +346,7 @@ class _LoginState extends State<Login> {
       localStorage.setString('token', json.encode(body['token']));
       localStorage.setString('user', json.encode(body['user']));
       print('ok i am done to routing ');
+      print(localStorage.getString('token'));
       Get.to(VendorDashboard(logoutCallback: _logout,));
     }else{
       _showMsg(body['message']);
