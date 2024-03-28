@@ -18,7 +18,7 @@ class _VendorProfileDisplayState extends State<VendorProfileDisplay> {
 
 @override
   void initState() {
-    // TODO: implement initState
+
 
     getData(widget.id!);
     print(widget.id!);
