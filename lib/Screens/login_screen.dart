@@ -2,19 +2,48 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:custom_searchable_dropdown/custom_searchable_dropdown.dart';
+import 'package:home_water_delivery_management_system/Screens/customer_screens/customers_dashboard.dart';
 import 'package:home_water_delivery_management_system/Screens/vendor_screens/vendor_dashboard.dart';
 import 'package:home_water_delivery_management_system/network_utils/api.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:home_water_delivery_management_system/Screens/register_screen.dart';
-
 import '../classes/countries.dart';
+
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
+  Future <String> getToken() async {
+    final SharedPreferences localStorage = await SharedPreferences.getInstance();
+    String? token = localStorage.getString('token');
+    if (token == null) {
+      throw Exception('Token is null');
+    }
+    token = token.replaceAll('"', '');
+    return token;
+  }
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool isAuth = false;
+  bool _isLoading = false;
+
+  final _formKey = GlobalKey<FormState>();
+  var phone;
+  var password;
+  var country_id;
+//login
+
+
+  //logout
+  void _logout() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    localStorage.remove('token');
+    setState(() {
+      isAuth = false;
+    });
+  }
+
   String? selectedCountryCode;
   String? selectedCountryDialCode;
   String? selectedCountryEmoji;
@@ -30,20 +59,9 @@ class _LoginState extends State<Login> {
       selectedCountryLabel = 'Pakistan';
     }
   }
-  bool isAuth=false;
-  void _logout() async {
-    SharedPreferences localStorage = await SharedPreferences.getInstance();
-    localStorage.remove('token');
-    setState(() {
-      isAuth = false;
-    });
-  }
-  bool _isLoading = false;
-  final _formKey = GlobalKey<FormState>();
-  var phone;
-  var password;
-  var country_id;
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+
+
   _showMsg(msg) {
     final snackBar = SnackBar(
       content: Text(msg),
@@ -60,19 +78,44 @@ class _LoginState extends State<Login> {
             ),
           );
   }
+
+
+  void _checkIfLoggedIn() async{
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var token = localStorage.getString('token');
+    if(token != null){
+      setState(() {
+        isAuth = true;
+      });
+    }
+  }
   @override
   void initState() {
     // TODO: implement initState
+
     setCountry();
+    getToken();
+    _checkIfLoggedIn();
+
   }
   @override
   Widget build(BuildContext context) {
-    // Build a Form widget using the _formKey created above.
+    // // Build a Form widget using the _formKey created above.
+    // Widget child;
+    //
+    // if (isAuth) {
+    //
+    //   child = VendorDashboard(
+    //       logoutCallback: _logout);
+    // } else {
+    //   child = Login();
+    // }
+    // return Scaffold(
+    //   key: _scaffoldKey,
+    //   body: child,
+    // );
     return Scaffold(
-      // appBar: AppBar(title:Text("KHI WATER",style: TextStyle(color: Colors.blueGrey),),
-      // backgroundColor: Colors.white,
-      //
-      // centerTitle: true,),
+
       key: _scaffoldKey,
       body: Container(
         // color: Colors.teal,
@@ -116,10 +159,7 @@ class _LoginState extends State<Login> {
                                 const Icon(Icons.keyboard_arrow_down_rounded),
                                 // primaryColor: Colors.grey.shade700,
                                 label: selectedCountryLabel,
-                                // labelStyle: GoogleFonts.raleway(
-                                //     fontWeight: FontWeight.w500,
-                                //     fontSize: 14,
-                                //     color: Colors.grey.shade700),
+
                                 dropDownMenuItems: Countries.countries.map((item) {
                                   return item['name'];
                                 }).toList(),
@@ -194,52 +234,7 @@ class _LoginState extends State<Login> {
                                   ),
                                 ],
                               ),
-                              // TextFormField(
-                              //   style: TextStyle(color: Color(0xFF000000)),
-                              //   cursorColor: Color(0xFF9b9b9b),
-                              //   keyboardType: TextInputType.number,
-                              //   decoration: InputDecoration(
-                              //     prefixIcon: Icon(
-                              //       Icons.countertops_rounded,
-                              //       color: Colors.grey,
-                              //     ),
-                              //     hintText: "country id",
-                              //     hintStyle: TextStyle(
-                              //         color: Color(0xFF9b9b9b),
-                              //         fontSize: 15,
-                              //         fontWeight: FontWeight.normal),
-                              //   ),
-                              //   validator: (countryValue) {
-                              //     if (countryValue!.isEmpty) {
-                              //       return 'Please enter country id';
-                              //     }
-                              //    country_id =countryValue;
-                              //     return null;
-                              //   },
-                              // ),
-                              // TextFormField(
-                              //   style: TextStyle(color: Color(0xFF000000)),
-                              //   cursorColor: Color(0xFF9b9b9b),
-                              //   keyboardType: TextInputType.text,
-                              //   decoration: InputDecoration(
-                              //     prefixIcon: Icon(
-                              //       Icons.phone,
-                              //       color: Colors.grey,
-                              //     ),
-                              //     hintText: "Phone",
-                              //     hintStyle: TextStyle(
-                              //         color: Color(0xFF9b9b9b),
-                              //         fontSize: 15,
-                              //         fontWeight: FontWeight.normal),
-                              //   ),
-                              //   validator: (phoneValue) {
-                              //     if (phoneValue!.isEmpty) {
-                              //       return 'Please enter phone';
-                              //     }
-                              //     phone = selectedCountryDialCode!+phoneValue;
-                              //     return null;
-                              //   },
-                              // ),
+
                               TextFormField(
                                 style: TextStyle(color: Color(0xFF000000)),
                                 cursorColor: Color(0xFF9b9b9b),
@@ -326,13 +321,13 @@ class _LoginState extends State<Login> {
     );
   }
 
-
   void _login() async{
     setState(() {
+
       _isLoading = true;
     });
     var data = {
-      // 'country_id' : selectedCountryDialCode,
+
       'phone' : phone,
       'password' : password
     };
@@ -341,19 +336,40 @@ class _LoginState extends State<Login> {
     var body = json.decode(res.body);
     print("This is body");
     print(body);
-    if(body['user'] != null){
+    if(body['user'] != null) {
+      int id = body['user_id'];
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.setString('token', json.encode(body['token']));
+      String? token= localStorage.getString('token');
       localStorage.setString('user', json.encode(body['user']));
-      print('ok i am done to routing ');
-      Get.to(VendorDashboard(logoutCallback: _logout,));
-    }else{
-      _showMsg(body['message']);
-    }
+      localStorage.setString('role', json.encode(body['role']));
+      localStorage.setInt('user_id', id);
 
+      int? user_id = localStorage.getInt('user_id');
+      print('user id from response');
+      print(user_id);
+
+      print('ok i am done to routing ');
+      String? role = localStorage.getString('role');
+      print(role);
+      if ( role == "1") {
+        Get.to(VendorDashboard(logoutCallback: _logout,
+        id:user_id));
+      }
+
+      else if ( role == "2") {
+        Get.to(CustomerDashboard(logoutCallback: _logout,));
+      }
+      else{
+        Get.to(Login());
+      }
+
+
+    }
     setState(() {
       _isLoading = false;
     });
 
   }
+
 }

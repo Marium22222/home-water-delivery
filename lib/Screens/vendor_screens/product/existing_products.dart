@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:home_water_delivery_management_system/Screens/vendor_screens/vendor_exist_dialogue.dart';
+import 'package:home_water_delivery_management_system/Screens/vendor_screens/bottle/bottle_dialogue.dart';
+import 'package:home_water_delivery_management_system/Screens/vendor_screens/product/product_dialogue.dart';
 import 'package:home_water_delivery_management_system/services/bottle_service.dart';
 import 'package:home_water_delivery_management_system/services/product_service.dart';
 
-import '../../models/bottles_model.dart';
-import '../../models/product_model.dart';
+import '../../../models/bottles_model.dart';
+import '../../../models/product_model.dart';
 
 
 class VendorExistingProduct extends StatefulWidget {
-  const VendorExistingProduct({super.key});
+  const VendorExistingProduct({super.key,});
 
   @override
   State<VendorExistingProduct> createState() => _VendorExistingProductState();
@@ -18,8 +19,6 @@ class VendorExistingProduct extends StatefulWidget {
 class _VendorExistingProductState extends State<VendorExistingProduct> {
   @override
   void initState() {
-
-
     getData();
   }
 //to be modified
@@ -40,17 +39,16 @@ class _VendorExistingProductState extends State<VendorExistingProduct> {
 
           return InkWell(
             onTap:(){
-              // showDialog(context: context,
-              //     builder: (context)=>
-                      // VendorExistingDialogue
-                      //   (id:bottles.bottle_id,size:bottles.size,name:bottles.name));
-
+              showDialog(context: context,
+                  builder: (context)=>
+              VendorExistingDialogue1
+                        (productid:products.product_id,name:products.name,price:products.price,description:products.description ,bottle_id: products.bottle_id,));
             },
             child: ListTile(
               leading: SizedBox(
                 width: 50,
                 height: 50,
-                child: Image.network("https://static6.depositphotos.com/1063437/556/i/450/depositphotos_5569996-stock-photo-polycarbonate-plastic-bottle-of-mineral.jpg"),),
+                child: Image.network( products.image_url),),
               title: Container(
                 decoration: BoxDecoration(
                   color: Colors.white, // Background color
@@ -68,10 +66,11 @@ class _VendorExistingProductState extends State<VendorExistingProduct> {
                   children: [
                     Text(products.name),
                     Text(products.description),
-                    Text("Price"),
-                    Text("description")
-                    // Text("Blu Water"),
-                    // Text("500 first advance")
+                    Text(products.price.toString()),
+                    Text(products.description),
+                    Text(products.bottle_id.toString())
+
+
 
 
                     // Text(items[index]),

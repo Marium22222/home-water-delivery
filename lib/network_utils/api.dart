@@ -3,8 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Network {
-  final String _url = 'http://167.71.238.72/api/';
-  // If you are using Android Studio emulator, change localhost to 10.0.2.2
+  final String _url = 'https://khiwater.com/api/';
+
   var token;
 
   Future<void> _getToken() async {
@@ -13,8 +13,7 @@ class Network {
     if (tokenJson != null) {
       token = jsonDecode(tokenJson);
     } else {
-      // Handle case where token is not found in SharedPreferences
-      // You might want to throw an error, provide a default token value, or handle it in some other way based on your application logic.
+
     }
   }
 

@@ -38,10 +38,10 @@ class _MainScreenState extends State<MainScreen> {
                Get.to(VendorDashboard(logoutCallback: _logout));
             }, child:
             Text("vendor")),
-            ElevatedButton(onPressed: (){
-               Get.to(CustomerDashboard());
-            }, child:
-            Text("customer"))
+            // ElevatedButton(onPressed: (){
+            //    Get.to(CustomerDashboard(logoutCallback: null,));
+            // }, child:
+            // Text("customer"))
           ],
         ),
       ),

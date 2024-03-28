@@ -230,18 +230,7 @@ class _RegisterState extends State<Register> {
                                   }
                                   return null;
                                 },
-                                // items: [
-                                //   'vendor',
-                                //   'user',
-                                //   'vendor_employee'
-                                // ].map<DropdownMenuItem<String>>((String value) {
-                                //   return DropdownMenuItem<String>(
-                                //     value: value,
-                                //     child: Text(value),
-                                //   );
-                                // }).toList(),
 
-                                //dropdown role names
                                 items: rolesList != null
                                     ? rolesList.map((role) {
                                   return DropdownMenuItem<String>(
@@ -275,29 +264,7 @@ class _RegisterState extends State<Register> {
                                   return null;
                                 },
                               ),
-                              // TextFormField(
-                              //   style: TextStyle(color: Color(0xFF000000)),
-                              //   cursorColor: Color(0xFF9b9b9b),
-                              //   keyboardType: TextInputType.number,
-                              //   decoration: InputDecoration(
-                              //     prefixIcon: Icon(
-                              //       Icons.insert_emoticon,
-                              //       color: Colors.grey,
-                              //     ),
-                              //     hintText: "country id",
-                              //     hintStyle: TextStyle(
-                              //         color: Color(0xFF9b9b9b),
-                              //         fontSize: 15,
-                              //         fontWeight: FontWeight.normal),
-                              //   ),
-                              //   validator: (countryId) {
-                              //     if (countryId == null || countryId.isEmpty) {
-                              //       return 'Please enter your country ID';
-                              //     }
-                              //     country_id = countryId;
-                              //     return null;
-                              //   },
-                              // ),
+
 
                               TextFormField(
                                 style: TextStyle(color: Color(0xFF000000)),

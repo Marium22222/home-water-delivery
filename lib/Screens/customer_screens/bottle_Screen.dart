@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:home_water_delivery_management_system/Screens/vendor_screens/vendor_exist_dialogue.dart';
+import 'package:home_water_delivery_management_system/Screens/vendor_screens/bottle/bottle_dialogue.dart';
 import 'package:home_water_delivery_management_system/services/bottle_service.dart';
 
-import '../../models/bottles_model.dart';
+import '../../../models/bottles_model.dart';
 
 
-class VendorExistingDetails extends StatefulWidget {
-  const VendorExistingDetails({super.key});
+class CustomerBottle extends StatefulWidget {
+  const CustomerBottle({super.key});
 
   @override
-  State<VendorExistingDetails> createState() => _VendorExistingDetailsState();
+  State<CustomerBottle> createState() => _CustomerBottleState();
 }
 
-class _VendorExistingDetailsState extends State<VendorExistingDetails> {
+class _CustomerBottleState extends State<CustomerBottle> {
   @override
   void initState() {
-
-
     getData();
   }
 
@@ -42,15 +40,15 @@ class _VendorExistingDetailsState extends State<VendorExistingDetails> {
           Bottles bottles = bottleList[index];
           return InkWell(
             onTap:(){
-               showDialog(context: context,
-               builder: (context)=>VendorExistingDialogue(id:bottles.bottle_id,size:bottles.size,name:bottles.name));
-          
-          },
+              // showDialog(context: context,
+              //     builder: (context)=>VendorExistingDialogue(id:bottles.bottle_id,size:bottles.size,name:bottles.name));
+
+            },
             child: ListTile(
               leading: SizedBox(
                 width: 50,
-                  height: 50,
-                  child: Image.network("https://static6.depositphotos.com/1063437/556/i/450/depositphotos_5569996-stock-photo-polycarbonate-plastic-bottle-of-mineral.jpg"),),
+                height: 50,
+                child: Image.network("https://static6.depositphotos.com/1063437/556/i/450/depositphotos_5569996-stock-photo-polycarbonate-plastic-bottle-of-mineral.jpg"),),
               title: Container(
                 decoration: BoxDecoration(
                   color: Colors.white, // Background color

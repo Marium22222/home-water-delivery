@@ -18,9 +18,7 @@ class VendorBottleUpdate extends StatefulWidget {
 class _VendorBottleUpdateState extends State<VendorBottleUpdate> {
   late TextEditingController sizeController ;
   late TextEditingController nameController ;
-  // String dropdownValue = '1.5L Water Bottle';
-  // // Default value
-  // String dropdownValue1 = '1.5L ';
+
 @override
   void initState() {
    sizeController=TextEditingController(text:widget.size);
@@ -58,10 +56,7 @@ class _VendorBottleUpdateState extends State<VendorBottleUpdate> {
             ElevatedButton(
               onPressed: (){
                 BottlesService().updateBottle(widget.id,sizeController.text,nameController.text);
-                // print(${widget.id}+$widget.name+widget.size);
-                print(widget.id);
-                   print(widget.name);
-                      print(widget.size);
+
               },
               child: Text('Update'),
             ),
